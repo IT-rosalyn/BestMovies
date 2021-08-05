@@ -16,7 +16,7 @@
 </head>
 <body>
  <div>
-            <form method="get" action="{% url 'rango:search' %}">
+            <form method="get" action="{% url 'Best_movies:search' %}">
                 <label>年份</label>
                         <select name="category">
                                 <option>All</option>
@@ -30,7 +30,7 @@
 </form>
         </div>
  <div>
-     <form id="show_tag" method="post" action="{% url 'rango:show_tag' %}">
+     <form id="show_tag" method="post" action="{% url 'Best_movies:show_tag' %}">
          {% csrf_token %}
 genre:
           <input type="radio" name="mark" value="all" id="invest_target_r1">
