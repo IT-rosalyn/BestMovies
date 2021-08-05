@@ -1,4 +1,4 @@
-{% extends 'rango/base.html' %}
+{% extends 'Best_movies/base.html' %}
 {% load static %}
 {% block title_block %}
     Homepage
@@ -18,7 +18,7 @@
                 <ul>
                     {% for movie in movies %}
                         <img src="/media/profile_images/{{ movie.name }}.png" onerror="this.src='/media/profile_images/default.png'" /><br>
-                        <li><a href="{% url 'rango:detail' movie.slug %}">{{movie.name}}</a></li>
+                        <li><a href="{% url 'Best_movies:detail' movie.slug %}">{{movie.name}}</a></li>
                     {% endfor %}
                 </ul>
             {% else %}
@@ -30,7 +30,7 @@
             {% if popular %}
                 <ul>
                     {% for m in popular %}
-                        <li><a href="{% url 'rango:detail' m.slug %}">{{m.name}}</a></li>
+                        <li><a href="{% url 'Best_movies:detail' m.slug %}">{{m.name}}</a></li>
                     {% endfor %}
                 </ul>
             {% else %}
