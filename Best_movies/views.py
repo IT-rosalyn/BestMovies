@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.shortcuts import render
 from django.http import HttpResponse
-from rango.models import Movie,Review,FavoriteList,User
-from rango.forms import UserForm, UserProfileForm
+from Best_movies.models import Movie,Review,FavoriteList,User
+from Best_movies.forms import UserForm, UserProfileForm
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth import authenticate,login,logout
@@ -18,7 +18,7 @@ def index(request):
 
     context_dict['movies'] = movie_list
     context_dict['popular'] = popular_list
-    response = render(request, 'rango/index.html', context=context_dict)
+    response = render(request, 'Best_movies/index.html', context=context_dict)
     #visitor_cookie_handler(request)
     return response
     # return HttpResponse("Rango says hey there partner!(<a href='/rango/about/'>About</a>)")
@@ -43,7 +43,7 @@ def register(request):
     else:
         user_form=UserForm()
         profile_form=UserProfileForm()
-    return render(request,'rango/register.html',context={'user_form': user_form,'profile_form':profile_form,'registered':registered})
+    return render(request,'Best_movies/register.html',context={'user_form': user_form,'profile_form':profile_form,'registered':registered})
 
 def user_login(request):
     if request.method=="POST":
@@ -61,8 +61,8 @@ def user_login(request):
             print(f"Invalid login details:{username},{password}")
             return HttpResponse("Invalid login details supplied.")
     else:
-        return  render(request,'rango/login.html')
-      def search(request):
+        return  render(request,'Best_movies/login.html')
+def search(request):
     context_dict ={}
     movie_name=[]
     actor_name=[]
@@ -85,7 +85,7 @@ def user_login(request):
     context_dict['category']=c
     context_dict['result']=r
     print(context_dict)
-    return render(request,'rango/search.html', context=context_dict)
+    return render(request,'Best_movies/search.html', context=context_dict)
 def detail(request,name):
     context_dict = {}
 
@@ -97,7 +97,7 @@ def detail(request,name):
     except:
         context_dict['movie'] = None
         context_dict['reviews'] = None
-    return render(request, 'rango/movie.html', context=context_dict)
+    return render(request, 'Best_movies/movie.html', context=context_dict)
 
 @login_required
 def like(request,id,name):
@@ -108,7 +108,7 @@ def like(request,id,name):
         review.like+=1
         review.status=1
         review.save()
-    return redirect(reverse('rango:detail', kwargs={'name': name}))
+    return redirect(reverse('Best_movies:detail', kwargs={'name': name}))
 @login_required
 def dislike(request,id,name):
     context_dict = {}
@@ -117,7 +117,7 @@ def dislike(request,id,name):
         review.like+=1
         review.status = 1
         review.save()
-    return redirect(reverse('rango:detail', kwargs={'name': name}))
+    return redirect(reverse('Best_movies:detail', kwargs={'name': name}))
 
 @login_required
 def add_review(request,username,name):
@@ -127,7 +127,7 @@ def add_review(request,username,name):
     except User.DoesNotExist:
         user=None
     if user is None:
-        return redirect('/rango/login.html')
+        return redirect('/Best_movies/login.html')
     if request.method=='POST':
         content=request.POST.get('review')
         title = request.POST.get('title')
@@ -136,10 +136,10 @@ def add_review(request,username,name):
         r.content=content
         r.rating=rating
         r.save()
-        return redirect(reverse('rango:detail',kwargs={'name': name}))
+        return redirect(reverse('Best_movies:detail',kwargs={'name': name}))
 
 
-    return render(request,'rango/index.html')
+    return render(request,'Best_movies/index.html')
 
 @login_required
 def favorite(request,username):
@@ -158,9 +158,9 @@ def favorite(request,username):
     except FavoriteList.DoesNotExist:
         favorite=None
     if user is None:
-        return redirect('/rango/login.html')
+        return redirect('/Best_movies/login.html')
 
-    return render(request, 'rango/favorite.html', context=context_dict)
+    return render(request, 'Best_movies/favorite.html', context=context_dict)
 
 def show_tag(request):
     context_dict={}
@@ -191,5 +191,8 @@ def show_tag(request):
                 end = datetime.date(context_dict['date'] + 1, 1, 1)
                 movie &= Movie.objects.filter(date__range=(start, end))
     context_dict['movies']=movie
-    return render(request, 'rango/category.html',context=context_dict)
-
+    return render(request, 'Best_movies/category.html',context=context_dict)
+@login_required
+def user_logout(request):
+    logout(request)
+    return redirect(reverse('Best_movies:index'))
