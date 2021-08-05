@@ -1,0 +1,46 @@
+{% extends 'rango/base.html' %}
+{% load static %}
+{% block body_block %}
+    {% if movie %}
+        <h1>name:{{ movie.name }}</h1>
+        genre:{{ movie.genre }}<br>
+         category:   {{ movie.category }}<br>
+           director: {{ movie.director }}<br>
+            actor:{{ movie.actor }}<br>
+            rating:{{ movie.average_rating}}({{ movie.people }} people rated)<br>
+        date:{{ movie.date}}<br>
+       launage: {{ movie.launage }}<br>
+        Production_country:{{ movie.Production_country }}<br>
+          description:      {{ movie.description }}<br>
+    {% else %}
+        There is no such movie.
+    {% endif %}
+
+    {% if reviews %}
+        <h1>Comments</h1>
+        {% for review in reviews %}
+            <h3>user:{{ review.user.username }} rate:{{ review.rating }}  date:{{ review.date }}<br></h3>
+            <h4>title:{{ review.title }}<br></h4>
+            content:{{ review.content }}<br>
+            {% if review.status == 1 %}
+               like:{{ review.like }} dislike:{{ review.dislike }}(already rate)
+            {% else %}
+                <a href="{% url 'rango:like' name=movie.slug id=review.id  %}">like</a> {{ review.like }}<a href="{% url 'rango:dislike' name=movie.slug id=review.id %}">dislike</a>{{ review.dislike }}
+            {% endif %}
+            <hr>
+        {% endfor %}
+     {% else %}
+        There are no comments yet .
+    {% endif %}
+    {% if user.is_authenticated %}
+    <div>
+    <form id="publish"  method="post" action="/rango/detail/{{movie.slug}}/{{ user.username }}/add_review/">
+        {% csrf_token %}
+        Title:<input type="text" name="title"><br>
+        Reviews:<textarea name="review" cols="40"></textarea><br>
+        Rating:<input type="text" name="rating"><br>
+        <input type="submit" name="submit" value="Add Review"/>
+    </form>
+    {% endif %}
+    </div>
+{% endblock %}
