@@ -1,0 +1,64 @@
+{% extends 'Best_movies/base.html' %}
+{% load static %}
+{% block title_block %}
+    Search
+{% endblock %}
+{% block body_block %}
+
+
+    <div>
+            <h2>results</h2>
+    {% if category == 'All' %}
+           <h2>Movie</h2>
+            {% if movie_name %}
+
+                <ul>
+                    {% for movie in movie_name %}
+                        <img src="/media/profile_images/{{ movie.name }}.png" onerror="this.src='/media/profile_images/default.png'"/><br>
+                        <li><a href="{% url 'Best_movies:detail' movie.slug %}">{{movie.name}}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <strong>There are no movies present.</strong>
+            {% endif %}
+        <h2>Actor</h2>
+            {% if actor_name %}
+
+                <ul>
+                    {% for actor in actor_name %}
+                        <img src="/media/profile_images/{{ actor.name }}.png" onerror="this.src='/media/profile_images/default.png'"/><br>
+                        <li>{{actor.name}}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <strong>There are no actors present.</strong>
+            {% endif %}
+    {% elif category == 'title' %}
+                        <h2>Movie</h2>
+        {% if movie_name %}
+
+                <ul>
+                    {% for movie in movie_name %}
+                        <img src="/media/profile_images/{{ movie.name }}.png" onerror="this.src='/media/profile_images/default.png'" /><br>
+                        <li>{{movie.name}}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <strong>There are no movies present.</strong>
+            {% endif %}
+    {% elif category == 'actor' %}
+        <h2>Actor</h2>
+        {% if actor_name %}
+                <h2>Actor</h2>
+                <ul>
+                   {% for actor in actor_name %}
+                        <img src="/media/profile_images/{{ actor.name }}.png" onerror="this.src='/media/profile_images/default.png'" /><br>
+                        <li>{{actor.name}}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <strong>There are no actors present.</strong>
+            {% endif %}
+    {% endif %}
+        </div>
+{% endblock %}

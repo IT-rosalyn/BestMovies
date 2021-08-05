@@ -1,0 +1,14 @@
+{% extends 'Best_movies/base.html' %}
+{% load static %}
+{% block body_block %}
+    {% if movies %}
+        <ul>
+                    {% for m in movies %}
+                        <li><img src="/media/profile_images/{{ m.name }}.png" onerror="this.src='/media/profile_images/default.png'" /><br>
+                        {{ m.name }}
+                    {% endfor %}
+                </ul>
+    {% else %}
+        There are no movies in your favorite list.
+    {% endif %}
+{% endblock %}

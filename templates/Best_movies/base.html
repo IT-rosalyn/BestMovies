@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+    <head lang="en">
+        <meta charset="UTF-8" />
+        <title>
+           Bestmovies -
+            {% block title_block %}
+               Homepage
+            {% endblock %}
+        </title>
+    </head>
+    <body>
+        <div>
+            <form method="get" action="{% url 'Best_movies:search' %}">
+                <label>年份</label>
+                        <select name="category">
+                                <option>All</option>
+                                <option>title</option>
+                                <option>actor</option>
+                            </select>
+
+                {% csrf_token %}
+            <input type="search"  name="search" >
+            <button type="submit">search</button>
+</form>
+        </div>
+        <hr />
+        <div>
+            <ul>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'Best_movies:restricted' %}">Restricted Page</a></li>
+                    <li><a href="{% url 'Best_movies:logout' %}">Logout</a></li>
+           
+                    <li><a href="{% url 'Best_movies:favorite' username=user.username %}">Favorite</a></li>
+                {% else %}
+                    <li><a href="{% url 'Best_movies:register' %}">Sign Up</a></li>
+                    <li><a href="{% url 'Best_movies:login' %}">Login</a></li>
+                {% endif %}
+                    <li><a href="{% url 'Best_movies:show_tag' %}">show_tag</a></li>
+               
+                    <li><a href="{% url 'Best_movies:index' %}">Index</a></li>
+
+
+            </ul>
+        </div>
+        <div>
+        {% block body_block %}
+            This is body_block's defalut content.
+        {% endblock %}
+        </div>
+
+    </body>
+</html>

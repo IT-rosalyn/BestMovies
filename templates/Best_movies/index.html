@@ -1,0 +1,43 @@
+{% extends 'Best_movies/base.html' %}
+{% load static %}
+{% block title_block %}
+    Homepage
+{% endblock %}
+{% block body_block %}
+        <h1>Rango says...</h1>
+        <div>
+            {% if user.is_authenticated %}
+                howdy {{ user.username }}!<br />
+            {% else %}
+                hey there partner!<br />
+            {% endif %}
+        </div>
+        <div>
+            <h2>Most Recent</h2>
+            {% if movies %}
+                <ul>
+                    {% for movie in movies %}
+                        <img src="/media/profile_images/{{ movie.name }}.png" onerror="this.src='/media/profile_images/default.png'" /><br>
+                        <li><a href="{% url 'Best_movies:detail' movie.slug %}">{{movie.name}}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <strong>There are no movies present.</strong>
+            {% endif %}
+        </div>
+        <div>
+            <h2>Most popular movies recently</h2>
+            {% if popular %}
+                <ul>
+                    {% for m in popular %}
+                        <li><a href="{% url 'Best_movies:detail' m.slug %}">{{m.name}}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <strong>There are no popular movie present.</strong>
+            {% endif %}
+        </div>
+        <div>
+            <img src="{% static 'images/rango.jpg' %}" alt="Picture of Rango"/>
+        </div>
+{% endblock %}

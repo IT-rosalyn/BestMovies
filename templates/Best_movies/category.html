@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        input[type=radio]{
+            display: none;
+        }
+        .radio-label:hover{
+            background:rgba(106,191,255,0.3);
+        }
+
+        input[type=radio]:checked+label{
+        background:rgba(106,191,255,0.6);
+        }
+    </style>
+</head>
+<body>
+ <div>
+            <form method="get" action="{% url 'Best_movies:search' %}">
+                <label>年份</label>
+                        <select name="category">
+                                <option>All</option>
+                                <option>title</option>
+                                <option>actor</option>
+                            </select>
+
+                {% csrf_token %}
+            <input type="search"  name="search" >
+            <button type="submit">search</button>
+</form>
+        </div>
+ <div>
+     <form id="show_tag" method="post" action="{% url 'Best_movies:show_tag' %}">
+         {% csrf_token %}
+genre:
+          <input type="radio" name="mark" value="all" id="invest_target_r1">
+    <label class="radio-label" for="invest_target_r1"> All </label>
+    <input type="radio" name="mark" value="movie" id="invest_target_r2">
+    <label class="radio-label" for="invest_target_r2"> movie </label>
+    <input type="radio" name="mark" value="comic" id="invest_target_r3">
+    <label class="radio-label" for="invest_target_r3"> comic </label>
+         <br>category:
+     <input type="radio" name="mark1" value="action" id="invest_target_r4">
+    <label class="radio-label" for="invest_target_r4"> action </label>
+    <input type="radio" name="mark1" value="Fantasy" id="invest_target_r5">
+    <label class="radio-label" for="invest_target_r5"> Fantasy </label>
+                  <br>Production_country :
+     <input type="radio" name="mark2" value="UK" id="invest_target_r6">
+    <label class="radio-label" for="invest_target_r6"> UK </label>
+    <input type="radio" name="mark2" value="American" id="invest_target_r7">
+    <label class="radio-label" for="invest_target_r7"> American </label>
+                           <br>date :
+     <input type="radio" name="mark3" value="2019" id="invest_target_r8">
+    <label class="radio-label" for="invest_target_r8"> 2019 </label>
+    <input type="radio" name="mark3" value="2021" id="invest_target_r9">
+    <label class="radio-label" for="invest_target_r9"> 2021 </label>
+<br><input type="submit" name="submit" value="search">
+    </form>
+     </div>
+ <div>
+{% if movies %}
+
+                <ul>
+                    {% for movie in movies %}
+                        <img src="/media/profile_images/{{ movie.name }}.png" onerror="this.src='/media/profile_images/default.png'"/><br>
+                        <li>{{movie.name}}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <strong>There are no movies present.</strong>
+            {% endif %}
+ </div>
+</body>
+</html>
