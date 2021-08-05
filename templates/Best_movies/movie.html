@@ -1,4 +1,4 @@
-{% extends 'rango/base.html' %}
+{% extends 'Best_movies/base.html' %}
 {% load static %}
 {% block body_block %}
     {% if movie %}
@@ -25,7 +25,7 @@
             {% if review.status == 1 %}
                like:{{ review.like }} dislike:{{ review.dislike }}(already rate)
             {% else %}
-                <a href="{% url 'rango:like' name=movie.slug id=review.id  %}">like</a> {{ review.like }}<a href="{% url 'rango:dislike' name=movie.slug id=review.id %}">dislike</a>{{ review.dislike }}
+                <a href="{% url 'Best_movies:like' name=movie.slug id=review.id  %}">like</a> {{ review.like }}<a href="{% url 'Best_movies:dislike' name=movie.slug id=review.id %}">dislike</a>{{ review.dislike }}
             {% endif %}
             <hr>
         {% endfor %}
@@ -34,7 +34,7 @@
     {% endif %}
     {% if user.is_authenticated %}
     <div>
-    <form id="publish"  method="post" action="/rango/detail/{{movie.slug}}/{{ user.username }}/add_review/">
+    <form id="publish"  method="post" action="/Best_movies/detail/{{movie.slug}}/{{ user.username }}/add_review/">
         {% csrf_token %}
         Title:<input type="text" name="title"><br>
         Reviews:<textarea name="review" cols="40"></textarea><br>
