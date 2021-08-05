@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Best_movies',
+    'Best_movies.apps.BestMoviesConfig',
 ]
 
 MIDDLEWARE = [
