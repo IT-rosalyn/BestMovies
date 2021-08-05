@@ -15,17 +15,24 @@
     {% else %}
         There is no such movie.
     {% endif %}
-
+    {% if user.is_authenticated %}
+        <a href="{% url 'Best_movies:add_movie' id=movie.id username=user.username %}">Add in FavoriteList</a>
+    {% endif %}
     {% if reviews %}
         <h1>Comments</h1>
         {% for review in reviews %}
             <h3>user:{{ review.user.username }} rate:{{ review.rating }}  date:{{ review.date }}<br></h3>
             <h4>title:{{ review.title }}<br></h4>
             content:{{ review.content }}<br>
-            {% if review.status == 1 %}
-               like:{{ review.like }} dislike:{{ review.dislike }}(already rate)
-            {% else %}
-                <a href="{% url 'Best_movies:like' name=movie.slug id=review.id  %}">like</a> {{ review.like }}<a href="{% url 'Best_movies:dislike' name=movie.slug id=review.id %}">dislike</a>{{ review.dislike }}
+            {% if user.username != '' %}
+                {% if user.username in review.user_list  %}
+                    like:{{ review.like }} dislike:{{ review.dislike }}(already rate)
+
+                {% else %}
+                    <a href="{% url 'Best_movies:like' name=movie.slug id=review.id username=user.username %}">like</a> {{ review.like }}<a href="{% url 'Best_movies:dislike' name=movie.slug id=review.id username=user.username %}">dislike</a>{{ review.dislike }}
+                {% endif %}
+                {% else %}
+                like:{{ review.like }} dislike:{{ review.dislike }}
             {% endif %}
             <hr>
         {% endfor %}

@@ -51,7 +51,7 @@ class Review(models.Model):
         like = models.PositiveIntegerField(default=0)
         # rate to  movie
         rating = models.PositiveIntegerField(default=1)
-        status=models.IntegerField(default=0)
+        user_list=models.CharField(blank=True,max_length=1000)
         def __str__(self):
             return self.title
         class Meta:

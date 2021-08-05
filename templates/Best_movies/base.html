@@ -30,7 +30,7 @@
         <div>
             <ul>
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'Best_movies:restricted' %}">Restricted Page</a></li>
+
                     <li><a href="{% url 'Best_movies:logout' %}">Logout</a></li>
            
                     <li><a href="{% url 'Best_movies:favorite' username=user.username %}">Favorite</a></li>

@@ -54,7 +54,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request,user)
-                return redirect(reverse('rango:index'))
+                return redirect(reverse('Best_movies:index'))
             else:
                 return HttpResponse("Your Rango account is disabled.")
         else:
@@ -88,7 +88,6 @@ def search(request):
     return render(request,'Best_movies/search.html', context=context_dict)
 def detail(request,name):
     context_dict = {}
-
     try:
         movie =Movie.objects.get(slug=name)
         review=Review.objects.filter(movie=movie)
@@ -100,24 +99,22 @@ def detail(request,name):
     return render(request, 'Best_movies/movie.html', context=context_dict)
 
 @login_required
-def like(request,id,name):
-    context_dict = {}
-    print(id,name)
-    review=Review.objects.get(id=id)
-    if review.status==0:
+def like(request,id,name,username):
+    if username!="":
+        context_dict = {}
+        review=Review.objects.get(id=id)
+        review.user_list=review.user_list+username+','
         review.like+=1
-        review.status=1
         review.save()
-    return redirect(reverse('Best_movies:detail', kwargs={'name': name}))
+        return redirect(reverse('Best_movies:detail', kwargs={'name': name}))
 @login_required
-def dislike(request,id,name):
-    context_dict = {}
-    review = Review.objects.get(id=id)
-    if review.status == 0:
-        review.like+=1
-        review.status = 1
+def dislike(request,id,name,username):
+    if username != "":
+        review = Review.objects.get(id=id)
+        review.user_list = review.user_list+username+','
+        review.dislike += 1
         review.save()
-    return redirect(reverse('Best_movies:detail', kwargs={'name': name}))
+        return redirect(reverse('Best_movies:detail', kwargs={'name': name}))
 
 @login_required
 def add_review(request,username,name):
@@ -196,3 +193,21 @@ def show_tag(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('Best_movies:index'))
+
+def add_movie(request,id,username):
+
+    context_dict={}
+    movies=[]
+    user = User.objects.get(username=username)
+
+    favorite=FavoriteList.objects.get_or_create(user=user)[0]
+
+    favorite.movie=favorite.movie+str(id)+","
+    favorite.save()
+    print(favorite.movie)
+    for i in re.findall("\d+", favorite.movie):
+        if Movie.objects.get(id=int(i)):
+            movie = Movie.objects.get(id=int(i))
+            movies.append(movie)
+    context_dict["movies"] = movies
+    return render(request, 'Best_movies/favorite.html', context=context_dict)

@@ -1,20 +1,23 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
     <style>
         input[type=radio]{
             display: none;
         }
-        .radio-label:hover{
+.radio-label:hover{
             background:rgba(106,191,255,0.3);
         }
 
-        input[type=radio]:checked+label{
+input[type=radio]:checked+label{
         background:rgba(106,191,255,0.6);
         }
+
     </style>
 </head>
 <body>
+<h1>test</h1>
  <div>
             <form method="get" action="{% url 'Best_movies:search' %}">
                 <label>年份</label>
